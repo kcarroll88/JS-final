@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<h1 style="text-align: center" class="title">Make your own Pizza</h1><br><br>
+
+<style>
+.container1{display:flex;justify-content:center;margin:auto;}
+.container2{display:flex;justify-content:center;margin:auto;}
+.container3{display:flex;justify-content:center;margin:auto;}
+.col-3{display:flex;}
+
+.title{font-size:50px;font-weight:bold;color:white;}
+
+body{background-color:#4e6582;}
+
+.frame{text-align:left;height:250px;width:200px;border:8px solid #000;
+border-radius:12%;background-color:#eff0f1;}
+
+.frame1{text-align:left;height:250px;width:500px;border:8px solid #000;
+border-radius:1%;background-color:#eff0f1;}
+
+#total{text-align:right;margin:4% 8%;background-color:lightgray;border:2px solid #000;
+border-radius:5%;}
+button{color:#696c70;margin:2% 1px;height:35px;width:250px;}
+button:hover{color:#000;font-weight:bold;border:2px solid #000;}
+.button{display:flex;justify-content:center;margin:auto;height:35px;width:250px;}
+
+
+</style>
+</head>
+<body>
+
+<div class="container1">
+	<div class="row">
+		<div class="col-3">
+			<div class="frame">
+				<h1 id="size" align="center">Size</h1>
+				<input class="size" type="radio" name="size" value="Personal"> Personal Pizza</input><br><br>
+				<input class="size" type="radio" name="size" value="Medium"> Medium Pizza</input><br><br>
+				<input class="size" type="radio" name="size" value="Large" checked> Large Pizza</input><br><br>
+				<input class="size" type="radio" name="size" value="XLarge"> Extra Large Pizza</input>
+			</div>
+
+			<div class="frame">
+				<h1 id="cheese" align="center">Cheese</h1><br>
+				<input type="radio" name="cheese" value="No Cheese"> No cheese</input><br><br>
+				<input type="radio" name="cheese" value="Regular Cheese" checked> Regular cheese</input><br><br>
+				<input type="radio" name="cheese" value="Extra Cheese"> Extra cheese</input><br><br>
+			</div>
+
+			<div class="frame">
+				<h1 id="sauce" align="center">Sauce</h1>
+				<input type="radio" name="sauce" value="No Sauce"> No sauce</input><br><br>
+				<input type="radio" name="sauce" value="Marinara Sauce" checked> Marinara sauce</input><br><br>
+				<input type="radio" name="sauce" value="White Sauce"> White sauce</input><br><br>
+				<input type="radio" name="sauce" value="Bbq Sauce"> Barbeque sauce</input>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container2">
+	<form id="frmMenu">
+		<div class="col-3">
+			<div class="frame">
+				<h1 id="crust" align="center">Crust</h1>
+				<input type="radio" name="crust" value="Plain Crust" checked> Plain crust</input><br>
+				<input type="radio" name="crust" value="Garlic Butter Crust"> Garlic Butter crust</input><br>
+				<input type="radio" name="crust" value="Cheese Stuffed Crust"> Cheese Stuffed crust</input><br>
+				<input type="radio" name="crust" value="Spicy Crust"> Spicy crust</input><br>
+				<input type="radio" name="crust" value="House Special Crust"> House Special crust</input>
+			</div>
+
+			<div class="frame">
+				<h1 id="meats" align="center">Meats</h1>
+				<input class="meats" type="checkbox" name="meats" value="Pepperoni"> Pepperoni</input><br>
+				<input class="meats" type="checkbox" name="meats" value="Sausage"> Sausage</input><br>
+				<input class="meats" type="checkbox" name="meats" value="Canadian"> Canadian Bacon</input><br>
+				<input class="meats" type="checkbox" name="meats" value="Ground"> Ground Beef</input><br>
+				<input class="meats" type="checkbox" name="meats" value="Anchovy"> Anchovy</input><br>
+				<input class="meats" type="checkbox" name="meats" value="Chicken"> Chicken</input>
+			</div>
+
+			<div class="frame">
+				<h1 id="veggies" align="center">Veggies</h1>
+				<input class="veggies" type="checkbox" name="veggies" value="Tomatoes"> Tomatoes</input><br>
+				<input class="veggies" type="checkbox" name="veggies" value="Onions"> Onions</input><br>
+				<input class="veggies" type="checkbox" name="veggies" value="Olives"> Olives</input><br>
+				<input class="veggies" type="checkbox" name="veggies" value="Green"> Green Peppers</input><br>
+				<input class="veggies" type="checkbox" name="veggies" value="Mushrooms"> Mushrooms</input><br>
+				<input class="veggies" type="checkbox" name="veggies" value="Pineapple"> Pineapple</input><br>
+				<input class="veggies" type="checkbox" name="veggies" value="Spinach"> Spinach</input><br>
+				<input class="veggies" type="checkbox" name="veggies" value="Jalapeno"> Jalapeno</input>
+			</div>
+		</div>
+	</form>
+</div>
+	<div class="col-2"><br><br>
+		<input id="btnOrder" type="button" class="button" onclick="getReceipt()" 
+				value="Place Order">
+		<button type="button" class="button" onclick="Clear();">Cancel</button><br>
+	</div>
+	<div id="cart">
+		<div id="showText"></div>
+		<div id="totalPrice"></div>
+	</div>
+<div class="container3">
+	<div class="frame1">
+		<h2 class="summary" align="center">Order Summary</h2>
+	</div>
+</div>
+
+<script>
+function getReceipt() {
+	// This initializes our string so it can get passed from  
+	// function to function, growing line by line into a full receipt
+	var text1 = "<h3>You Ordered:</h3>";
+	var runningTotal = 0;
+	var sizeTotal = 0;
+	var sizeArray = document.getElementsByClassName("size");
+	for (var i = 0; i < sizeArray.length; i++) {
+		if (sizeArray[i].checked) {
+			var selectedSize = sizeArray[i].value;
+			text1 = text1+selectedSize+"<br>";
+		}
+	}
+	if (selectedSize === "Personal") {
+		sizeTotal = 6;
+	} else if (selectedSize === "Medium") {
+		sizeTotal = 10;
+	} else if (selectedSize === "Large") {
+		sizeTotal = 14;
+	} else if (selectedSize === "XLarge") {
+		sizeTotal = 16;
+	}
+	runningTotal = sizeTotal;
+	console.log(selectedSize+" = $"+sizeTotal+".00");
+	console.log("size text1: "+text1);
+	console.log("subtotal: $"+runningTotal+".00");
+	getMeat(runningTotal,text1); // All three of these variables will be passed on to each function
+};
+		 
+function getMeat(runningTotal,text1) {
+	var meatTotal = 0;
+	var selectedMeat = [];
+	var meatArray = document.getElementsByClassName("meats");
+	for (var j = 0; j < meatArray.length; j++) {
+		if (meatArray[j].checked) {
+			selectedMeat.push(meatArray[j].value);
+			console.log("selected meat item: ("+meatArray[j].value+")");
+			text1 = text1+meatArray[j].value+"<br>";
+		}
+	}
+	var meatCount = selectedMeat.length;
+	if (meatCount > 1) {
+		meatTotal = (meatCount - 1);
+	} else {
+		meatTotal = 0;
+	}
+	runningTotal = (runningTotal + meatTotal);
+	console.log("total selected meat items: "+meatCount);
+	console.log(meatCount+" meat - 1 free meat = "+"$"+meatTotal+".00");
+	console.log("meat text1: "+text1);
+	console.log("Purchase Total: "+"$"+runningTotal+".00");
+	document.getElementById("showText").innerHTML=text1;
+	document.getElementById("totalPrice").innerHTML = "</h3>Total: <strong>$"+runningTotal+".00"+"</strong></h3>";
+};		
+
+
+function getVeggies(runningTotal,text2) {
+	var veggiesTotal = 0;
+	var selectedVeggies = [];
+	var veggiesArray = document.getElementsByClassName("veggies");
+	for (var k = 0; k < veggiesArray.length; k++) {
+		if (veggiesArray[k].checked) {
+			selectedVeggies.push(veggiesArray[k].value);
+			console.log("selected veggies item: ("+veggiesArray[k].value+")");
+			text2 = text2+veggiesArray[k].value+"<br>";
+		}
+	}
+	var veggiesCount = selectedVeggies.length;
+	if (veggiesCount > 1) {
+		veggiesTotal = (veggiesCount - 1);
+	} else {
+		veggiesTotal = 0;
+	}
+	runningTotal = (runningTotal + veggiesTotal);
+	console.log("total selected veggies items: "+veggiesCount);
+	console.log(meatCount+" veggies - 1 free veggies = "+"$"+veggiesTotal+".00");
+	console.log("veggies text2: "+text2);
+	console.log("Purchase Total: "+"$"+runningTotal+".00");
+	document.getElementById("showText").innerHTML=text2;
+	document.getElementById("totalPrice").innerHTML = "</h3>Total: <strong>$"+runningTotal+".00"+"</strong></h3>";
+};		
+
+	function Clear() {
+	txt1.value=""; txt2.value=""; total.innerHTML="0.00"; // reset fields
+};	 
+</script>
+</body>
+</html>
